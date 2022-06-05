@@ -1,6 +1,6 @@
-<link rel="icon" type="image/png" href="{{ asset('/img/logo2.png') }}">
+{{-- <link rel="icon" type="image/png" href="{{ asset('/img/logo2.png') }}"> --}}
 <title>
-    ANDALAN JAYA TEKNIK ONLINE SYSTEM
+    
 </title>
 <x-guest-layout>
     <x-jet-authentication-card>

@@ -10,8 +10,8 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header card-header-primary">
-        <h4 class="card-title ">List Customers
-          <button type="button" class="btn btn-success" style="float:right" onclick="open_modal_create()">ADD NEW CUSTOMER</button>
+        <h4 class="card-title ">List Karyawan
+          <button type="button" class="btn btn-success" style="float:right" onclick="open_modal_create()">Tambah Karyawan</button>
         </h4>
       </div>
       <div class="card-body">
@@ -22,37 +22,45 @@
                 No
               </th> --}}
               <th class='text-left'>
-                Name
+                Nomor Induk
               </th>
               <th class='text-left'>
-                Address
+                Nama
               </th>
               <th class='text-left'>
-                Phone
+                Alamat
               </th>
               <th class='text-left'>
-                Email
+                Tanggal Lahir
+              </th>
+              <th class='text-left'>
+                Tanggal Bergabung
+              </th>
+              <th class='text-left'>
+                Sisa Cuti
               </th>
               <th class='text-center'>
-                Details
+                {{-- Details --}}
               </th>
             </thead>
             <tbody id='main_table'>
-              @foreach ($customers as $key => $value)
+              @foreach ($karyawan as $key => $value)
                 <tr>
                     {{-- <td>{{$key+1}}</td> --}}
-                    <td class="td_name"   id="td_name_{{$value->id}}">{{$value->name}}</td>
-                    <td class="td_addr"   id="td_addr_{{$value->id}}">{{$value->address}}</td>
-                    <td class="td_phone1" id="td_phone1_{{$value->id}}">{{$value->phone1}}</td>
-                    <td class="td_email"  id="td_email_{{$value->id}}">{{$value->email}}</td>
-                    <td class='text-center'>
-                        <button class="btn btn-warning btn-fab btn-fab-mini btn-round" onclick="open_edit('{{$value->id}}')">
+                    <td class="td_nomor_induk"   id="td_nomor_induk{{$value->nomor_induk}}">{{$value->nomor_induk}}</td>
+                    <td class="td_name"   id="td_name_{{$value->nomor_induk}}">{{$value->nama}}</td>
+                    <td class="td_addr"   id="td_addr_{{$value->nomor_induk}}">{{$value->alamat}}</td>
+                    <td class="td_phone1" id="td_phone1_{{$value->nomor_induk}}">{{date('d-M-y',strtotime($value->tanggal_lahir))}}</td>
+                    <td class="td_email"  id="td_email_{{$value->nomor_induk}}">{{date('d-M-y',strtotime($value->tanggal_bergabung))}}</td>
+                    <td>{{12-App\Models\cuti::where('nomor_induk',$value->nomor_induk)->sum('lama_cuti')}}</td>
+                    <td class='text-center' style='width:15%'>
+                        <button class="btn btn-warning btn-fab btn-fab-mini btn-round" onclick="open_edit('{{$value->nomor_induk}}')">
                             <i class="material-icons">edit</i>
                         </button>
-                        <button class="btn btn-primary btn-fab btn-fab-mini btn-round" onclick="open_detail('{{$value->id}}')">
+                        {{-- <button class="btn btn-primary btn-fab btn-fab-mini btn-round" onclick="open_detail('{{$value->nomor_induk}}')">
                           <i class="material-icons">view_list</i>
-                        </button>
-                        <button class="btn btn-danger btn-fab btn-fab-mini btn-round" onclick="open_delete('{{$value->id}}','{{$value->name}}')">
+                        </button> --}}
+                        <button class="btn btn-danger btn-fab btn-fab-mini btn-round" onclick="open_delete('{{$value->nomor_induk}}','{{$value->nama}}')">
                             <i class="material-icons">delete</i>
                         </button>
                     </td>
@@ -120,7 +128,7 @@
         <div class="modal-content">
             <div class="card">
                 <div class="card-header card-header-primary">
-                    <h4 class="card-title ">Add New Customer</h4>
+                    <h4 class="card-title ">Tambah Karyawan</h4>
                 </div>
                 <div class="modal-body">
                     <form class="form" method="post" id="form_modal_create">
@@ -131,7 +139,7 @@
                                   <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="material-icons">business</i></div>
                                   </div>
-                                  <input type="text" name='name' id='cust-name' class="form-control input_form" placeholder="Name...">
+                                  <input type="text" name='nama' id='cust-name' class="form-control input_form" placeholder="Nama...">
                                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 </div>
                             </div>
@@ -141,45 +149,57 @@
                                   <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="material-icons">home</i></div>
                                   </div>
-                                  <input type="text" name='address' id='cust-address' class="form-control input_form" placeholder="Address...">
+                                  <input type="text" name='alamat' id='cust-address' class="form-control input_form" placeholder="Alamat...">
                                 </div>
                             </div>
                           
                             <div class="form-group bmd-form-group">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <div class="input-group-text"><i class="material-icons">contact_phone</i></div>
-                                  </div>
-                                  <input type="text" name='phone1' id='cust-phone1' class="form-control input_form" placeholder="Phone 1...">
-                                </div>
-                            </div>
-
-                            <div class="form-group bmd-form-group">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <div class="input-group-text"><i class="material-icons">contact_phone</i></div>
-                                  </div>
-                                  <input type="text" name='phone2' id='cust-phone2' class="form-control input_form" placeholder="Phone 2...">
-                                </div>
-                            </div>
-
-                            <div class="form-group bmd-form-group">
                               <div class="input-group">
                                 <div class="input-group-prepend">
-                                  <div class="input-group-text"><i class="material-icons">contact_phone</i></div>
+                                  <div class="input-group-text">
+                                    <i class="material-icons">person</i>
+                                  </div>
                                 </div>
-                                <input type="text" name='phone3' id='cust-phone3' class="form-control input_form" placeholder="Phone 3...">
+                                {{-- <div class='row'> --}}
+                                  <div class='col-md-2 col-sm-2 col-lg-2'> 
+                                    <select class="form-control" data-style="btn btn-link" id="input-date" name='date_input'>
+                                      @php
+                                        for ($i=1; $i < 32; $i++) { 
+                                          echo("<option value='$i'>$i</option>");
+                                        }
+                                      @endphp
+                                    </select>
+                                  </div>
+                                  <div class='col-md-4 col-sm-4 col-lg-4'> 
+                                    <select class="form-control" data-style="btn btn-link" id="input-month" name='month_input'>
+                                      @php
+                                        $months=array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
+                                        foreach ($months as $key => $value) {
+                                          $key++;
+                                          echo("<option value='$key'>$value</option>");
+                                        }
+                                      @endphp
+                                    </select>
+                                  </div>
+
+                                  <div class='col-md-4 col-sm-4 col-lg-4'> 
+                                    <select class="form-control" data-style="btn btn-link" id="input-year" name='year_input'>
+                                      @php
+                                        $year=date('Y');
+                                        for ($i=1900; $i <=$year ; $i++) { 
+                                          $selected="";
+                                          if ($i==$year) {
+                                            $selected="selected";
+                                          }
+                                          echo("<option value='$i' $selected>$i</option>");
+                                        }
+                                      @endphp
+                                    </select>
+                                  </div>
+                                
                               </div>
                             </div>
 
-                            <div class="form-group bmd-form-group">
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <div class="input-group-text"><i class="material-icons">email</i></div>
-                                </div>
-                                <input type="text" name='email' id='cust-email' class="form-control input_form" placeholder="Email...">
-                              </div>
-                            </div>
                         </div>
                     </form> 
                 </div>
@@ -197,11 +217,11 @@
       <div class="modal-content">
           <div class="card">
               <div class="card-header card-header-primary">
-                  <h4 class="card-title ">Edit Customer - <span id='edit-title'></span></h4>
+                  <h4 class="card-title ">Edit Karyawan - <span id='edit-title'></span></h4>
               </div>
               <div class="modal-body">
                   <form class="form" method="post" id="form_modal_edit">
-                      <input type="hidden" name='edit_id_customer' id='edit-id_customer'>
+                      <input type="hidden" name='edit_id_karyawan' id='edit-id_karyawan'>
                       <div class="card-body">
 
                           <div class="form-group bmd-form-group">
@@ -224,40 +244,52 @@
                           </div>
                         
                           <div class="form-group bmd-form-group">
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <div class="input-group-text"><i class="material-icons">contact_phone</i></div>
-                                </div>
-                                <input type="text" name='edit_phone1' id='edit-cust-phone1' class="form-control input_form" placeholder="Phone 1...">
-                              </div>
-                          </div>
-
-                          <div class="form-group bmd-form-group">
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <div class="input-group-text"><i class="material-icons">contact_phone</i></div>
-                                </div>
-                                <input type="text" name='edit_phone2' id='edit-cust-phone2' class="form-control input_form" placeholder="Phone 2...">
-                              </div>
-                          </div>
-
-                          <div class="form-group bmd-form-group">
                             <div class="input-group">
                               <div class="input-group-prepend">
-                                <div class="input-group-text"><i class="material-icons">contact_phone</i></div>
+                                <div class="input-group-text">
+                                  <i class="material-icons">person</i>
+                                </div>
                               </div>
-                              <input type="text" name='edit_phone3' id='edit-cust-phone3' class="form-control input_form" placeholder="Phone 3...">
+                              {{-- <div class='row'> --}}
+                                <div class='col-md-2 col-sm-2 col-lg-2'> 
+                                  <select class="form-control" data-style="btn btn-link" id="edit-input-date" name='date_input'>
+                                    @php
+                                      for ($i=1; $i < 32; $i++) { 
+                                        echo("<option value='$i'>$i</option>");
+                                      }
+                                    @endphp
+                                  </select>
+                                </div>
+                                <div class='col-md-4 col-sm-4 col-lg-4'> 
+                                  <select class="form-control" data-style="btn btn-link" id="edit-input-month" name='month_input'>
+                                    @php
+                                      $months=array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
+                                      foreach ($months as $key => $value) {
+                                        $key++;
+                                        echo("<option value='$key'>$value</option>");
+                                      }
+                                    @endphp
+                                  </select>
+                                </div>
+
+                                <div class='col-md-4 col-sm-4 col-lg-4'> 
+                                  <select class="form-control" data-style="btn btn-link" id="edit-input-year" name='year_input'>
+                                    @php
+                                      $year=date('Y');
+                                      for ($i=1900; $i <=$year ; $i++) { 
+                                        $selected="";
+                                        if ($i==$year) {
+                                          $selected="selected";
+                                        }
+                                        echo("<option value='$i' $selected>$i</option>");
+                                      }
+                                    @endphp
+                                  </select>
+                                </div>
+                              
                             </div>
                           </div>
 
-                          <div class="form-group bmd-form-group">
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <div class="input-group-text"><i class="material-icons">email</i></div>
-                              </div>
-                              <input type="text" name='edit_email' id='edit-cust-email' class="form-control input_form" placeholder="Email...">
-                            </div>
-                          </div>
                       </div>
                   </form> 
               </div>
@@ -367,7 +399,7 @@
                   </form> 
               </div>
               <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" onclick="save_data('Address')">Save</button>
+                  <button type="button" id='modal_save_button' class="btn btn-primary" onclick="save_data('Address')">Save</button>
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               </div>
           </div>
@@ -385,13 +417,13 @@
             // searching: false,bLengthChange: false,rowReorder: true,ordering: false
             searching: true,bLengthChange: false,rowReorder: true
         });
-        $('#cust-phone1').mask('000-000-000-000');
-        $('#cust-phone2').mask('000-000-000-000');
-        $('#cust-phone3').mask('000-000-000-000');
+        $('#cust-phone1').mask('000-000-000-000-000');
+        $('#cust-phone2').mask('000-000-000-000-000');
+        $('#cust-phone3').mask('000-000-000-000-000');
 
-        $('#edit-cust-phone1').mask('000-000-000-000');
-        $('#edit-cust-phone2').mask('000-000-000-000');
-        $('#edit-cust-phone3').mask('000-000-000-000');
+        $('#edit-cust-phone1').mask('000-000-000-000-000');
+        $('#edit-cust-phone2').mask('000-000-000-000-000');
+        $('#edit-cust-phone3').mask('000-000-000-000-000');
     });
     // function open_detail(id){
     //     $("#modal_details").modal('show');
@@ -408,16 +440,13 @@
     }
 
     function save_data(mode=null) {
-        
+      console.log(mode);
+        $("#modal_save_button").prop('disabled', true);
         var form = $("#form_modal_create");
-        var url  = "{{route('save_customer')}}";
-        if (mode=='Address'){
-          form = $("#form_modal_create_address");
-          $("#id_customer").val($("#id_customer_").val());
-          url = "{{route('save_address_customer')}}";
-        } else if (mode=='edit-customer'){
-          form = $("#form_modal_edit");
-          url = "{{route('edit_customer')}}";
+        var url  = "{{route('save_karyawan')}}";
+        if (mode=='edit-customer'){
+            url = "{{route('update_karyawan')}}";
+            form= $("#form_modal_edit");
         }
         $.ajax({
             headers: {
@@ -432,31 +461,38 @@
                   $("#main_table").html('');
                   var string_html = '';
                   for (var x = 0; x < data.data.length; x++) {
-                    data.data[x]['address'] = data.data[x]['address']==null?'-':data.data[x]['address'];
-                    data.data[x]['phone1'] = data.data[x]['phone1']==null?'-':data.data[x]['phone1'];
-                    data.data[x]['email'] = data.data[x]['email']==null?'-':data.data[x]['email'];
-                    var btn = "<td class='text-center'><button class='btn btn-primary btn-fab btn-fab-mini btn-round' onclick=open_detail('"+data.data[x]['id']+"')><i class='material-icons'>view_list</i></button></td>";
-                    var btn_del = "<td class='text-center'><button class='btn btn-danger btn-fab btn-fab-mini btn-round' onclick=open_delete('"+data.data[x]['id']+"','"+data.data[x]['name']+"')><i class='material-icons'>delete</i></button></td>";
-                    string_html += "<tr><td>"+data.data[x]['name']+"</td><td>"+data.data[x]['address']+"</td><td>"+data.data[x]['phone1']+"</td><td>"+data.data[x]['email']+"</td>"+btn+btn_del+"</tr>";
+                    var btn_del = "<button class='btn btn-danger btn-fab btn-fab-mini btn-round' onclick=open_delete('"+data.data[x]['nomor_induk']+"','"+data.data[x]['nama']+"')><i class='material-icons'>delete</i></button>";
+                    var btn_edit = "<button class='btn btn-warning btn-fab btn-fab-mini btn-round' onclick=open_edit('"+data.data[x]['nomor_induk']+"')><i class='material-icons'>edit</i></button>";
+                    var sisa_cuti = 12;
+                    for (var y = 0; y < data.cuti.length; y++) {
+                      if (data.cuti[y]['nomor_induk']==data.data[x]['nomor_induk']){
+                        sisa_cuti = sisa_cuti-data.cuti[y]['total_cuti'];
+                      }
+                    }
+                    
+                    string_html += "<tr><td>"+data.data[x]['nomor_induk']+"</td><td>"+data.data[x]['nama']+"</td><td>"+data.data[x]['alamat']+"</td><td>"+data.data[x]['tanggal_lahir_format']+"</td><td>"+data.data[x]['tanggal_bergabung_format']+"</td><td>"+sisa_cuti+"</td><td class='text-center'>"+btn_edit+btn_del+"</td></tr>";
                   }
                   $("#main_table").html(string_html);
                   
                   $("#modal_create").modal('hide');
                   
                   $("#list_datas").DataTable({
-                      searching: false,bLengthChange: false,rowReorder: false,ordering: false
+                      searching: true,bLengthChange: false,rowReorder: true
                   });
                   save_reset_field();
                   $("#modal_success").modal('show');
+                  $("#modal_edit").modal('hide');
                   $("#modal_details").modal('hide');
                   $("#modal_create_address").modal('hide');
                 }
             },
         });
+        $("#modal_save_button").prop('disabled', false);
     }
 
     function open_delete(id,name) {
       $("#id_delete").val(id);
+      name = name.replace(/%20/g, " ");
       $("#modal_delete_info").html("("+name+")");
       $("#modal_delete").modal('show');
     }
@@ -468,7 +504,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             type: 'post',
-            url: "{{route('delete_customer')}}",
+            url: "{{route('delete_karyawan')}}",
             data: {
                 "_token": "{{ csrf_token() }}",
                 'id': id
@@ -479,105 +515,24 @@
                   $("#main_table").html('');
                   var string_html = '';
                   for (var x = 0; x < data.data.length; x++) {
-                    data.data[x]['address'] = data.data[x]['address']==null?'-':data.data[x]['address'];
-                    data.data[x]['phone1'] = data.data[x]['phone1']==null?'-':data.data[x]['phone1'];
-                    data.data[x]['email'] = data.data[x]['email']==null?'-':data.data[x]['email'];
-                    var btn = "<td class='text-center'><button class='btn btn-primary btn-fab btn-fab-mini btn-round' onclick=open_detail('"+data.data[x]['id']+"')><i class='material-icons'>view_list</i></button></td>";
-                    var btn_del = "<td class='text-center'><button class='btn btn-danger btn-fab btn-fab-mini btn-round' onclick=open_delete('"+data.data[x]['id']+"','"+data.data[x]['name']+"')><i class='material-icons'>delete</i></button></td>";
-                    string_html += "<tr><td>"+data.data[x]['name']+"</td><td>"+data.data[x]['address']+"</td><td>"+data.data[x]['phone1']+"</td><td>"+data.data[x]['email']+"</td>"+btn+btn_del+"</tr>";
+                    var btn_del = "<button class='btn btn-danger btn-fab btn-fab-mini btn-round' onclick=open_delete('"+data.data[x]['nomor_induk']+"','"+data.data[x]['nama']+"')><i class='material-icons'>delete</i></button>";
+                    var btn_edit = "<button class='btn btn-warning btn-fab btn-fab-mini btn-round' onclick=open_edit('"+data.data[x]['nomor_induk']+"')><i class='material-icons'>edit</i></button>";
+                    var sisa_cuti = 12;
+                    for (var y = 0; y < data.cuti.length; y++) {
+                      if (data.cuti[y]['nomor_induk']==data.data[x]['nomor_induk']){
+                        sisa_cuti = sisa_cuti-data.cuti[y]['total_cuti'];
+                      }
+                    }
+                    
+                    string_html += "<tr><td>"+data.data[x]['nomor_induk']+"</td><td>"+data.data[x]['nama']+"</td><td>"+data.data[x]['alamat']+"</td><td>"+data.data[x]['tanggal_lahir_format']+"</td><td>"+data.data[x]['tanggal_bergabung_format']+"</td><td>"+sisa_cuti+"</td><td class='text-center'>"+btn_edit+btn_del+"</td></tr>";
                   }
                   $("#main_table").html(string_html);
                   $("#modal_delete").modal('hide');
                   
                   $("#list_datas").DataTable({
-                      searching: true,bLengthChange: false,rowReorder: true,ordering: false
+                      searching: true,bLengthChange: false,rowReorder: true
                   });
                 }
-            },
-        });
-    }
-    function open_detail(id) {
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            type: 'post',
-            url: "{{route('show_contact_person')}}",
-            data: {
-                "_token": "{{ csrf_token() }}",
-                'id': id
-            },
-            success: function (data) {
-                var success = data['result'];
-                var data    = data['data'];
-                var html_   = "";
-                for (var x = 0; x < data.length; x++) {
-                    var tooltips = "<td class='td-actions text-right'>"+
-                      "<button type='button' rel='tooltip' class='btn btn-danger btn-fab btn-fab-mini btn-round'>"+
-                          "<i class='material-icons'>delete</i>"+
-                      "</button>"+
-                    "</td>";
-                    var mini_table = "<tr><table id='cp_table_"+data[x][id]+"'><tr><td>"+data[x]['cp_name1']+"</td><td>"+data[x]['phone1']+"</td></tr>"+
-                      "<tr><td>"+data[x]['cp_name2']+"</td><td>"+data[x]['phone2']+"</td></tr>"+
-                      "</table></tr>"; 
-                    html_ += "<tr id='"+data[x]['id']+"' class='collapse_cp' data-toggle='collapse' data-target='.collapse_"+data[x]['id']+"'><td>"+(x+1)+"</td><td class='text-left'>"+data[x]['name']+"</td><td class='text-left'>"+data[x]['address']+"</td></tr>";
-                    // html_ += "<table class='table table-bordered'><tr><td>1</td><td>2</td><td>3</td></tr></table>";
-                    var cp_info_1 = "<tr class='collapse collapse_"+data[x]['id']+"'><td></td><td>"+data[x]['cp_name1']+"</td><td>"+data[x]['phone1']+"</td></tr>";
-                    var cp_info_2 = "<tr class='collapse collapse_"+data[x]['id']+"'><td></td><td>"+data[x]['cp_name2']+"</td><td>"+data[x]['phone2']+"</td></tr>";
-                    var cp_info_3 = "<tr class='collapse collapse_"+data[x]['id']+"'><td></td><td>"+data[x]['cp_name3']+"</td><td>"+data[x]['phone3']+"</td></tr>";
-                    
-                    if (data[x]['cp_name2']==null){
-                      cp_info_2 = "";
-                    }
-                    if (data[x]['cp_name3']==null){
-                      cp_info_3 = "";
-                    }
-                    html_ += cp_info_1+cp_info_2+cp_info_3;
-                    // console.log(data[x]);
-                    console.log(html_);
-                }
-
-                // <tr id='1' class='collapse_cp'>
-                //   <td>1</td>
-                //   <td class='text-left'>PT Jati Sari </td>
-                //   <td class='text-left'>Raya Bromo, Rogojampi - Srono,Banyuwangi</td>
-                // </tr>
-                // <table>
-                //   <tr>
-                //     <td>Yogi</td>
-                //     <td>08121615708</td>
-                //   </tr>
-                //   <tr>
-                //     <td>null</td>
-                //     <td>null</td>
-                //   </tr>
-                // </table>
-                //   <tr id='2' class='collapse_cp'>
-                //     <td>2</td>
-                //     <td class='text-left'>PT Putra Prima Sentosa</td>
-                //     <td class='text-left'>Raya Pandanlandung no 44,Wagir - Malang</td>
-                //   </tr>
-                // <table>
-                //   <tr>
-                //     <td>Bu Dewi (purch)</td>
-                //     <td>081232963606</td>
-                //   </tr>
-                //   <tr>
-                //     <td>Bp Rofiq </td>
-                //     <td>081233028000</td>
-                //   </tr>
-                // </table>
-
-                $("#modal_details_body").html(html_);
-                // var emailPembeli = data['email'];
-                // var telpPembeli = data['phone'];
-                // var namaPembeli = data['name'];
-                // $("#edit-id").val(id);
-                // $("#edit-name").val(namaPembeli);
-                // $("#edit-address").val(tujuanPengiriman);
-
-                $("#id_customer_").val(id);
-                $("#modal_details").modal('show');
             },
         });
     }
@@ -588,7 +543,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             type: 'post',
-            url: "{{route('show_customer')}}",
+            url: "{{route('show_karyawan')}}",
             data: {
                 "_token": "{{ csrf_token() }}",
                 "id": id
@@ -600,14 +555,14 @@
 
                 console.log(data);
                 $("#edit-title").html("");
-                $("#edit-title").html(data.name);
-                $("#edit-cust-name").val(data.name);
-                $("#edit-cust-address").val(data.address);
-                $("#edit-cust-phone1").val(data.phone1);
-                $("#edit-cust-phone2").val(data.phone2);
-                $("#edit-cust-phone3").val(data.phone3);
-                $("#edit-cust-email").val(data.email);
-
+                $("#edit-title").html(data.nama);
+                $("#edit-id_karyawan").val(data.nomor_induk);
+                $("#edit-cust-name").val(data.nama);
+                $("#edit-cust-address").val(data.alamat);
+                $("#edit-input-date").val(parseInt((data.tanggal_lahir).substring(8)));
+                console.log(parseInt(((data.tanggal_lahir).substring(5)).substring(0,2)));
+                $("#edit-input-month").val(parseInt(((data.tanggal_lahir).substring(5)).substring(0,2)));
+                $("#edit-input-year").val(parseInt((data.tanggal_lahir).substring(0,4)));
                 $("#edit-id_customer").val(id);
                 $("#modal_edit").modal('show');
             },

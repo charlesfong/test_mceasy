@@ -2,12 +2,12 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8" />
-        <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('/template_admin/img/apple-icon.png') }}">
+        {{-- <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('/template_admin/img/apple-icon.png') }}"> --}}
         {{-- <link rel="icon" type="image/png" href="{{ asset('/img/favicon.png') }}"> --}}
-        <link rel="icon" type="image/png" href="{{ asset('/img/logo2.png') }}">
+        {{-- <link rel="icon" type="image/png" href="{{ asset('/img/logo2.png') }}"> --}}
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <title>
-          ANDALAN JAYA TEKNIK ONLINE SYSTEM
+          Test. MC easy
         </title>
         <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
         <!--     Fonts and icons     -->
@@ -17,6 +17,7 @@
         <link href="{{ asset('/template_admin/css/material-dashboard.css?v=2.1.2') }}" rel="stylesheet" />
         <!-- CSS Just for demo purpose, don't include it in your project -->
         {{-- <link href="{{ asset('/template_admin/demo/demo.css') }}" rel="stylesheet" /> --}}
+        {{-- DATE TIME PICKER --}}
         <style>
           /* MODAL CONFIRM SUCCESS */
           body {
@@ -200,7 +201,7 @@
               <ul class="nav">
                 
                 <li class="nav-item @if ($nav_tab=='dashboard') @php echo('active') @endphp @endif">
-                  <a class="nav-link" href="{{ action('App\Http\Controllers\AdminController@index') }}">
+                  <a class="nav-link" href="#">
                     <i class="material-icons">dashboard</i>
                     <p>Dashboard</p>
                   </a>
@@ -208,118 +209,26 @@
                 <li class="nav-item ">
                   <a class="nav-link collapsed" data-toggle="collapse" href="#contact_menu" aria-expanded="false">
                     <i class="material-icons">person</i>
-                    <p>Contact
+                    <p>Karyawan
                       <b class="caret"></b>
                     </p>
                   </a>
-                  <div class="collapse @if ($nav_tab=='customer'||$nav_tab=='supplier') @php echo('show') @endphp @endif" id="contact_menu" style="">
+                  <div class="collapse @if ($nav_tab=='list_karyawan'||$nav_tab=='list_cuti') @php echo('show') @endphp @endif" id="contact_menu" style="">
                     <ul class="nav">
-                      <li class="nav-item @if ($nav_tab=='customer') @php echo('active') @endphp @endif">
-                        <a class="nav-link" href="{{ action('App\Http\Controllers\CustomerController@index') }}">
-                          <span class="sidebar-mini"> C </span>
-                          <span class="sidebar-normal">Customers </span>
+                      <li class="nav-item @if ($nav_tab=='list_karyawan') @php echo('active') @endphp @endif">
+                        <a class="nav-link" href="{{ action('App\Http\Controllers\KaryawanController@list_karyawan') }}">
+                          <span class="sidebar-mini"> LK </span>
+                          <span class="sidebar-normal">List Karyawan </span>
                         </a>
                       </li>
-                      <li class="nav-item @if ($nav_tab=='supplier') @php echo('active') @endphp @endif">
-                        <a class="nav-link" href="{{ action('App\Http\Controllers\SupplierController@index') }}">
-                          <span class="sidebar-mini"> S </span>
-                          <span class="sidebar-normal">Suppliers </span>
-                        </a>
-                      </li>
-                      <li class="nav-item @if ($nav_tab=='courier') @php echo('active') @endphp @endif">
-                        <a class="nav-link" href="{{ action('App\Http\Controllers\CourierController@index') }}">
-                          <span class="sidebar-mini"> K </span>
-                          <span class="sidebar-normal">Courier </span>
+                      <li class="nav-item @if ($nav_tab=='list_cuti') @php echo('active') @endphp @endif">
+                        <a class="nav-link" href="{{ action('App\Http\Controllers\KaryawanController@list_cuti') }}">
+                          <span class="sidebar-mini"> LC </span>
+                          <span class="sidebar-normal">List Cuti </span>
                         </a>
                       </li>
                     </ul>
                   </div>
-                </li>
-                <li class="nav-item ">
-                  <a class="nav-link collapsed" data-toggle="collapse" href="#order_menu" aria-expanded="false">
-                    <i class="material-icons">content_paste</i>
-                    <p>Orders
-                      <b class="caret"></b>
-                    </p>
-                  </a>
-                  <div class="collapse @if ($nav_tab=='create_order'||$nav_tab=='list_orders'||$nav_tab=='create_po'||$nav_tab=='list_po') @php echo('show') @endphp @endif" id="order_menu" style="">
-                    {{-- <ul class="nav">
-                      <li class="nav-item @if ($nav_tab=='create_po') @php echo('active') @endphp @endif"">
-                        <a class="nav-link" href="{{ action('App\Http\Controllers\OrderController@create_po') }}">
-                          <span class="sidebar-mini"> CPO </span>
-                          <span class="sidebar-normal">Create PO </span>
-                        </a>
-                      </li>
-                      <li class="nav-item @if ($nav_tab=='list_po') @php echo('active') @endphp @endif"">
-                        <a class="nav-link" href="{{ action('App\Http\Controllers\OrderController@list_po') }}">
-                          <span class="sidebar-mini"> LPO </span>
-                          <span class="sidebar-normal"> List PO </span>
-                        </a>
-                      </li>
-                    </ul> --}}
-                    <ul class="nav">
-                      <li class="nav-item @if ($nav_tab=='create_order') @php echo('active') @endphp @endif"">
-                        <a class="nav-link" href="{{ action('App\Http\Controllers\OrderController@create_order') }}">
-                          <span class="sidebar-mini"> CO </span>
-                          <span class="sidebar-normal">Create Order </span>
-                        </a>
-                      </li>
-                      <li class="nav-item @if ($nav_tab=='list_orders') @php echo('active') @endphp @endif"">
-                        <a class="nav-link" href="{{ action('App\Http\Controllers\OrderController@list_orders') }}">
-                          <span class="sidebar-mini"> LO </span>
-                          <span class="sidebar-normal"> List Orders </span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="nav-item @if ($nav_tab=='list_products') @php echo('active') @endphp @endif">
-                  <a class="nav-link" href="{{ action('App\Http\Controllers\ProductController@index') }}">
-                    <i class="material-icons">library_books</i>
-                    <p>Products</p>
-                  </a>
-                </li>
-                {{-- <li class="nav-item @if ($nav_tab=='dashboard3') @php echo('active') @endphp @endif">
-                  <a class="nav-link" href="./icons.html">
-                    <i class="material-icons">fact_check</i>
-                    <p>Payments</p>
-                  </a>
-                </li> --}}
-                <li class="nav-item @if ($nav_tab=='report') @php echo('active') @endphp @endif">
-                  <a class="nav-link" href="{{ action('App\Http\Controllers\ReportController@index') }}">
-                    <i class="material-icons">note</i>
-                    <p>Reports</p>
-                  </a>
-                </li>
-                <li class="nav-item ">
-                  <a class="nav-link collapsed" data-toggle="collapse" href="#setting_menu" aria-expanded="false">
-                    <i class="material-icons">settings</i>
-                    <p>Settings
-                      <b class="caret"></b>
-                    </p>
-                  </a>
-                  <div class="collapse @if ($nav_tab=='company-info'||$nav_tab=='profile-info') @php echo('show') @endphp @endif" id="setting_menu" style="">
-                    <ul class="nav">
-                      <li class="nav-item @if ($nav_tab=='company-info') @php echo('active') @endphp @endif">
-                        <a class="nav-link" href="{{ route('company-info') }}">
-                          <span class="sidebar-mini"> CI </span>
-                          <span class="sidebar-normal">Company Info </span>
-                        </a>
-                      </li>
-                      <li class="nav-item @if ($nav_tab=='profile-info') @php echo('active') @endphp @endif">
-                        <a class="nav-link" href="{{ route('profile-info') }}">
-                          <span class="sidebar-mini"> PI </span>
-                          <span class="sidebar-normal">Profile Info</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="nav-item" id="logout_btn" onclick="logout_()">
-                  <a class="nav-link" href="#">
-                    <i class="material-icons">logout</i>
-                    <p>Logout</p>
-                  </a>
                 </li>
               </ul>
             </div>
@@ -367,50 +276,6 @@
             </footer>
           </div>
         </div>
-        {{-- <div class="fixed-plugin">
-          <div class="dropdown show-dropdown">
-            <a href="#" data-toggle="dropdown">
-              <i class="fa fa-cog fa-2x"> </i>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header-title"> Sidebar Filters</li>
-              <li class="adjustments-line">
-                <a href="javascript:void(0)" class="switch-trigger active-color">
-                  <div class="badge-colors ml-auto mr-auto">
-                    <span class="badge filter badge-purple" data-color="purple"></span>
-                    <span class="badge filter badge-azure" data-color="azure"></span>
-                    <span class="badge filter badge-green" data-color="green"></span>
-                    <span class="badge filter badge-warning" data-color="orange"></span>
-                    <span class="badge filter badge-danger" data-color="danger"></span>
-                    <span class="badge filter badge-rose active" data-color="rose"></span>
-                  </div>
-                  <div class="clearfix"></div>
-                </a>
-              </li>
-              <li class="header-title">Images</li>
-              <li class="active">
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="{{ asset('/template_admin/img/sidebar-1.jpg') }}" alt="">
-                </a> 
-              </li>
-              <li>
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="{{ asset('/template_admin/img/sidebar-2.jpg') }}" alt="">
-                </a>
-              </li>
-              <li>
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                  <img src="{{ asset('/template_admin/img/sidebar-3.jpg') }}" alt="">
-                </a>
-              </li>
-              <li>
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                  <img src="{{ asset('/template_admin/img/sidebar-4.jpg') }}" alt="">
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div> --}}
 
         {{-- MODAL  --}}
         <div id="modal_delete" class="modal fade">
